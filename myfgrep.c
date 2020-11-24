@@ -92,7 +92,7 @@ void print_matches_in_file(FILE *file, char *pattern,
          copy_string(curLine, line, LINE_LEN, ignore_case);
          
          // Create an check substring exist, then print the line if it does exist
-         char *substring = strstr(curLine, pattern)
+         char *substring = strstr(curLine, pat)
          if(substring != NULL)
          {
             if (print_line_number)
