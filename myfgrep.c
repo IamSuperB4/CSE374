@@ -34,12 +34,12 @@ int main(int argc, char **argv) {
    // Check if options are passed
     for (int i = 0; i < 2; i++)
     {
-      if (strncmp(argv[i], "-i\0") == 0)
+      if (strncmp(argv[i], "-i\0", 3) == 0)
       {
          ignore_case = true;
          startIndex += 1;
       }
-      else if (strncmp(argv[i], "-n\0") == 0)
+      else if (strncmp(argv[i], "-n\0", 3) == 0)
       {
          print_line_number = true;
          startIndex += 1;
@@ -47,20 +47,20 @@ int main(int argc, char **argv) {
     }
     
     // Check if there is enough parameters
-    if( startIndex + 2 < argsc)
+    if( startIndex + 2 < argc)
     {
       fprintf(stderr, "%s\n", "Not enough arguments");
       exit(EXIT_FAILURE);
     }
     
     // Get parameters
-    char pattern[] = &argv[startIndex + 1];
+    char pattern[] = argv[startIndex + 1];
     int num_files = argc - startIndex - 1;
     
     // Point to file names
     for(int i = num_files + 1; i < argc; i++)
     {
-      char **filename_list = &argv[i - (num_files + 1)]
+      char **filename_list = &argv[i - (num_files + 1)];
     }
     
     // Call print_all_matches
@@ -89,8 +89,8 @@ void copy_string(char *copy_to, char *copy_from, int max_length,
     {
       for (int i = 0; i < max_length; i++)
       {
-         copy_to = tolower(copy_to[i]);
-         copy_from = tolower(copy_from[i]);
+         copy_to[i] = tolower(copy_to[i]);
+         copy_from[i] = tolower(copy_from[i]);
       }
    }
     
@@ -129,15 +129,15 @@ void print_matches_in_file(FILE *file, char *pattern,
          copy_string(curLine, line, LINE_LEN, ignore_case);
          
          // Create an check substring exist, then print the line if it does exist
-         char *substring = strstr(curLine, pat)
+         char *substring = strstr(curLine, pat);
          if(substring != NULL)
          {
             if (print_line_number)
             {
-               printf("(%d) %s", lineNum, line)
+               printf("(%d) %s", lineNum, line);
             }
             else {
-               printf("%s", line)
+               printf("%s", line);
             }
          }
          
@@ -177,6 +177,7 @@ void print_all_matches(int num_files, char **filename_list, char *pattern,
 //  - program_name: the name of the program being run (argv[0])
 void usage(char *program_name);
 
-void usage(char *program_name) {
+void usage(char *program_name)
+{
     printf("Usage: %s [OPTIONS] pattern file...\n", program_name);
 }
