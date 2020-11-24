@@ -155,10 +155,6 @@ void print_matches_in_file(FILE *file, char *pattern,
          lineNum++;
       }
     }
-    
-    else {
-      fprintf(stderr, "Could not open file: %p\n", *file);
-   }
 }
 
 
@@ -168,8 +164,15 @@ void print_all_matches(int num_files, char **filename_list, char *pattern,
    // Go through each file in the list
    for (int i = 0; i < num_files; i++)
    {
-      FILE *file = &filename_list[i];
-      print_matches_in_file(file, pattern, ignore_case, print_line_number);
+      FILE *file = fopen(filename_list, "r");
+      if (file == NULL)
+      {
+         fprintf(stderr, "Could not open file: %p\n", filename_list[i]);
+      }
+      else {
+         printf("%s:\n", filename_list[i]);
+         print_matches_in_file(file, pattern, ignore_case, print_line_number);
+      }
    }
 }
 
