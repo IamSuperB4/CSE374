@@ -80,7 +80,7 @@ void print_matches_in_file(FILE *file, char *pattern,
     {
       // Copy pattern and change if ignore_case is true
       char pat[PAT_LEN];
-      copy_string(pat, *pattern, PAT_LEN, ignore_case);
+      copy_string(pat, pattern, PAT_LEN, ignore_case);
       
       // Parse through each line of the file
       char line[LINE_LEN];
@@ -92,7 +92,7 @@ void print_matches_in_file(FILE *file, char *pattern,
          copy_string(curLine, line, LINE_LEN, ignore_case);
          
          // Create an check substring exist, then print the line if it does exist
-         char *substring = strstr(curLine, *pattern)
+         char *substring = strstr(curLine, pattern)
          if(substring != NULL)
          {
             if (print_line_number)
@@ -120,7 +120,7 @@ void print_all_matches(int num_files, char **filename_list, char *pattern,
    // Go through each file in the list
    for (int i = 0; i < num_files; i++)
    {
-     print_matches_in_file(filename_list[i], *pattern, ignore_case, print_line_number);
+     print_matches_in_file(filename_list[i], pattern, ignore_case, print_line_number);
    }
 }
 
