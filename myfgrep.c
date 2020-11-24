@@ -1,9 +1,9 @@
+// TODO: Add any other needed imports
 #include <stdbool.h>
 #include <stdio.h>
 #include <ctype.h>
 #include <string.h>
 #include <stdlib.h>
-// TODO: Add any other needed imports
 
 // TODO: Add file constants for line and pattern length
 #define PAT_LEN 101
@@ -51,24 +51,25 @@ void usage(char *program_name);
 // Returns the exit status
 int main(int argc, char **argv);
 
-
-// TODO: Fill in functions below
-
+// Copies a string (up to max length)
 void copy_string(char *copy_to, char *copy_from, int max_length,
                  bool lowercase) {
     
     // Convert to lowercase
     if (lowercase)
     {
-      tolower(*copy_to)
-      tolower(*copy_from)
-      strncpy(*copy_to, *copy_from, max_length);
-    }
-    else {
-      strncpy(*copy_to, *copy_from, max_length);
+      for (int i = 0; i < max_length; i++)
+      {
+         copy_to = tolower(copy_to[i]);
+         copy_from = tolower(copy_from[i]);
+      }
    }
+    
+   strncpy(copy_to, copy_from, max_length);
+   
 }
-// ------------------------------------------------------------------
+
+// Prints all lines in a file that match the pattern
 void print_matches_in_file(FILE *file, char *pattern,
                            bool ignore_case, bool print_line_number) {
     int lineNum = 1;
@@ -77,23 +78,26 @@ void print_matches_in_file(FILE *file, char *pattern,
     // If pointer exist parse through file, else print "could not open"
     if (file != NULL)
     {
-      char line[LINE_LEN];
+      // Copy pattern and change if ignore_case is true
       char pat[PAT_LEN];
       copy_string(pat, *pattern, PAT_LEN, ignore_case);
       
       // Parse through each line of the file
+      char line[LINE_LEN];
       while (fgets(line, LINE_LEN, file) != NULL)
       {
          
-         // Check and find substring
-         char *substring = strstr(line, *pattern)
+         // Copy current line and change if ignore_case is true
+         char curLine[LINE_LEN];
+         copy_string(curLine, line, LINE_LEN, ignore_case);
          
-         // If substring exist, then print the line
+         // Create an check substring exist, then print the line if it does exist
+         char *substring = strstr(curLine, *pattern)
          if(substring != NULL)
          {
             if (print_line_number)
             {
-               printf("(%i) %s", lineNum, line)
+               printf("(%d) %s", lineNum, line)
             }
             else {
                printf("%s", line)
@@ -105,20 +109,20 @@ void print_matches_in_file(FILE *file, char *pattern,
     }
     
     else {
-      printf("Could not open file: %p", *file);
+      fprintf(stderr, "Could not open file: %p\n", *file);
    }
 }
-// ---------------------------------------------------------------------
 
+// Loops through a list of files and prints matches to the pattern for each
 void print_all_matches(int num_files, char **filename_list, char *pattern,
                        bool ignore_case, bool print_line_number) {
+                       
    // Go through each file in the list
-   for (i = 0; i < num_files; i++)
+   for (int i = 0; i < num_files; i++)
    {
      print_matches_in_file(filename_list[i], *pattern, ignore_case, print_line_number);
    }
 }
-// -------------------------------------------------------------------
 
 void usage(char *program_name) {
     printf("Usage: %s [OPTIONS] pattern file...\n", program_name);
@@ -138,8 +142,8 @@ int main(int argc, char **argv) {
    bool print_line_number;
    int startIndex = 0;
 
-   // check if options are applied
-    for (i = 0; i < 2; i++)
+   // Check if options are passed
+    for (int i = 0; i < 2; i++)
     {
       if (strncmp(argv[i], "-i\0") == 0)
       {
@@ -153,13 +157,23 @@ int main(int argc, char **argv) {
       }
     }
     
+    // Check if there is enough parameters
     if( startIndex + 2 < argsc)
     {
       fprintf(stderr, "%s\n", "Not enough arguments");
       exit(EXIT_FAILURE);
     }
     
-    // char pattern[] = arg[startIndex + 1];
+    // Get parameters
+    char pattern[] = argv[startIndex + 1];
+    int num_files = argc - startIndex - 1;
     
+    // Point to file names
+    for(int i = num_files + 1; i < argc; i++)
+    {
+      char **filename_list[i] = argv[i]
+    }
     
+    // Call print_all_matches
+    print_all_matches(num_files, , pattern, ignore_case, print_line_number);
 }
