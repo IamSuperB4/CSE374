@@ -17,6 +17,16 @@
 // Returns the exit status
 int main(int argc, char **argv);
 
+// Loops through a list of files and prints matches to the pattern for each
+// Params:
+//  - num_files:         number of files in the list
+//  - filename_list:     list of filenames to check
+//  - pattern:           the pattern to look for in each line
+//  - ignore_case:       whether to ignore case when using the pattern
+//  - print_line_number: whether to print the line number for each matching line
+void print_all_matches(int num_files, char **filename_list, char *pattern,
+                       bool ignore_case, bool print_line_number);
+
 int main(int argc, char **argv) {
    
    // Print error if there is not enough parameters
@@ -64,7 +74,7 @@ int main(int argc, char **argv) {
     }
     
     // Call print_all_matches
-    print_all_matches(num_files, filename_list, pattern, ignore_case, print_line_number);
+    print_all_matches(num_files, &filename_list, pattern, ignore_case, print_line_number);
     
     exit(EXIT_SUCCESS);
 }
@@ -151,23 +161,13 @@ void print_matches_in_file(FILE *file, char *pattern,
 }
 
 
-// Loops through a list of files and prints matches to the pattern for each
-// Params:
-//  - num_files:         number of files in the list
-//  - filename_list:     list of filenames to check
-//  - pattern:           the pattern to look for in each line
-//  - ignore_case:       whether to ignore case when using the pattern
-//  - print_line_number: whether to print the line number for each matching line
-void print_all_matches(int num_files, char **filename_list, char *pattern,
-                       bool ignore_case, bool print_line_number);
-
 void print_all_matches(int num_files, char **filename_list, char *pattern,
                        bool ignore_case, bool print_line_number) {
                        
    // Go through each file in the list
    for (int i = 0; i < num_files; i++)
    {
-     print_matches_in_file(filename_list[i], pattern, ignore_case, print_line_number);
+     print_matches_in_file(&filename_list[i], pattern, ignore_case, print_line_number);
    }
 }
 
