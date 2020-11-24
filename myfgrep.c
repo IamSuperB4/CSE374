@@ -165,15 +165,15 @@ int main(int argc, char **argv) {
     }
     
     // Get parameters
-    char pattern[] = argv[startIndex + 1];
+    char pattern[] = &argv[startIndex + 1];
     int num_files = argc - startIndex - 1;
     
     // Point to file names
     for(int i = num_files + 1; i < argc; i++)
     {
-      char **filename_list[i] = argv[i]
+      char **filename_list = &argv[i - (num_files + 1)]
     }
     
     // Call print_all_matches
-    print_all_matches(num_files, , pattern, ignore_case, print_line_number);
+    print_all_matches(num_files, filename_list, pattern, ignore_case, print_line_number);
 }
