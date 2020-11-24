@@ -176,4 +176,6 @@ int main(int argc, char **argv) {
     
     // Call print_all_matches
     print_all_matches(num_files, filename_list, pattern, ignore_case, print_line_number);
+    
+    exit(EXIT_SUCCESS);
 }
