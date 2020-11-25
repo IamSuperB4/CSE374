@@ -48,7 +48,7 @@ int main(int argc, char **argv) {
    int startIndex = 0;
 
    // Check if options are passed
-    for (int i = 0; i < 2; i++)
+    for (int i = 1; i < 3; i++)
     {
       if (strncmp(argv[i], "-i\0", 3) == 0)
       {
@@ -63,7 +63,7 @@ int main(int argc, char **argv) {
     }
     
     // Check if there is enough parameters
-    if( startIndex + 2 > argc )
+    if( startIndex + 3 > argc )
     {
       usage(argv[0]);
       fprintf(stderr, "%s\n", "Not enough arguments");
@@ -75,15 +75,9 @@ int main(int argc, char **argv) {
     char *pattern = argv[startIndex + 1];
     int num_files = argc - fileIndex;
     char **filename_list;
-    
-    // Point to file names
-    for(int i = fileIndex; i < argc; i++)
-    {
-      filename_list = &argv[i];
-    }
-    
+
     // Call print_all_matches
-    print_all_matches(num_files, filename_list, pattern, ignore_case, print_line_number);
+    print_all_matches(num_files, &argv[fileIndex], pattern, ignore_case, print_line_number);
     
     exit(EXIT_SUCCESS);
 }
