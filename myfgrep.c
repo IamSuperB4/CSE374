@@ -9,13 +9,10 @@
 #define PAT_LEN 101
 #define LINE_LEN 502
 
-// Main entry point of the function
-// Parses the input into flags, pattern, and files
+// Print the usage of the program
 // Params:
-//  - argc: The number of arguments provided
-//  - argv: The list of arguments provided
-// Returns the exit status
-int main(int argc, char **argv);
+//  - program_name: the name of the program being run (argv[0])
+void usage(char *program_name);
 
 // Loops through a list of files and prints matches to the pattern for each
 // Params:
@@ -27,11 +24,20 @@ int main(int argc, char **argv);
 void print_all_matches(int num_files, char **filename_list, char *pattern,
                        bool ignore_case, bool print_line_number);
 
+// Main entry point of the function
+// Parses the input into flags, pattern, and files
+// Params:
+//  - argc: The number of arguments provided
+//  - argv: The list of arguments provided
+// Returns the exit status
+int main(int argc, char **argv);
+
 int main(int argc, char **argv) {
    
    // Print error if there is not enough parameters
    if (argc < 3)
    {
+      usage(argv[0]);
       fprintf(stderr, "%s\n", "Not enough arguments");
       exit(EXIT_FAILURE);
    }
@@ -57,21 +63,23 @@ int main(int argc, char **argv) {
     }
     
     // Check if there is enough parameters
-    if( startIndex + 2 < argc)
+    if( startIndex + 2 > argc )
     {
+      usage(argv[0]);
       fprintf(stderr, "%s\n", "Not enough arguments");
       exit(EXIT_FAILURE);
     }
     
     // Get parameters
+    int fileIndex = startIndex + 2;
     char *pattern = argv[startIndex + 1];
-    int num_files = argc - startIndex - 1;
+    int num_files = argc - fileIndex;
     char **filename_list;
     
     // Point to file names
-    for(int i = num_files + 1; i < argc; i++)
+    for(int i = fileIndex; i < argc; i++)
     {
-      filename_list = &argv[i - (num_files + 1)];
+      filename_list = &argv[i];
     }
     
     // Call print_all_matches
@@ -164,10 +172,10 @@ void print_all_matches(int num_files, char **filename_list, char *pattern,
    // Go through each file in the list
    for (int i = 0; i < num_files; i++)
    {
-      FILE *file = fopen(filename_list, "r");
+      FILE *file = fopen(filename_list[i], "r");
       if (file == NULL)
       {
-         fprintf(stderr, "Could not open file: %p\n", filename_list[i]);
+         fprintf(stderr, "Could not open file: %s\n", filename_list[i]);
       }
       else {
          printf("%s:\n", filename_list[i]);
@@ -175,12 +183,6 @@ void print_all_matches(int num_files, char **filename_list, char *pattern,
       }
    }
 }
-
-
-// Print the usage of the program
-// Params:
-//  - program_name: the name of the program being run (argv[0])
-void usage(char *program_name);
 
 void usage(char *program_name)
 {
